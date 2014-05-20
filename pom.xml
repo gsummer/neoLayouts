@@ -1,0 +1,77 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.networklibrary</groupId>
+	<artifactId>simplelayouts</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+
+	<name>simplelayouts</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<optimize>true</optimize>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+					<compilerArguments>
+						<Xmaxwarns>10000</Xmaxwarns>
+						<Xmaxerrs>10000</Xmaxerrs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>server-api</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-graph-algo</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-cypher</artifactId>
+			<version>2.0.3</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-kernel</artifactId>
+			<version>2.0.3</version>
+		</dependency> -->
+		
+		
+	</dependencies>
+</project>
