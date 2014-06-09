@@ -29,7 +29,7 @@ public class CircleLayoutExtension extends ServerPlugin {
 		double n = 0;
 
 		List<Node> isolated = new ArrayList<Node>();
-		Map<Node,Node> singles = new HashMap<Node,Node>();
+		Map<Node,List<Node>> singles = new HashMap<Node,List<Node>>();
 		List<Node> normals = new ArrayList<Node>();
 
 		try(Transaction tx = graph.beginTx()){
@@ -40,7 +40,12 @@ public class CircleLayoutExtension extends ServerPlugin {
 					isolated.add(node);
 					break;
 				case 1:
-					singles.put(node.getRelationships().iterator().next().getOtherNode(node),node);
+					Node multi = node.getRelationships().iterator().next().getOtherNode(node);
+					if(!singles.containsKey(multi)){
+						singles.put(multi, new ArrayList<Node>());
+					}
+					singles.get(multi).add(node);
+					
 					break;
 				default:
 					normals.add(node);
@@ -55,25 +60,34 @@ public class CircleLayoutExtension extends ServerPlugin {
 
 		double r = calculateRadius(normals.size());
 		double angle = calculateAngle(normals.size());
-		double singleR = r * 1.2;
+		double singleR = r * 1.25;
 		
 		int perRow = (int)(2*r / SPACEOFNODE);
 		
 		double i = 0;
 		try (Transaction tx = graph.beginTx()){
 			for(Node node : normals){
+				
+				double baseAngle = angle * i;
+				double x = r * Math.cos(baseAngle);
+				double y = r * Math.sin(baseAngle);
+				
 				result.add(new Long(node.getId()).doubleValue());
-				double x = r * Math.cos(angle * i);
-				double y = r * Math.sin(angle * i);
 				result.add(x);
 				result.add(y);
+				
 				i = i + 1.0;
+				
 				if(singles.containsKey(node)){
-					double singleX = singleR * Math.cos(angle * i);
-					double singleY = singleR * Math.sin(angle * i);
-					result.add(new Long(singles.get(node).getId()).doubleValue());
-					result.add(singleX);
-					result.add(singleY);
+					
+				// wuzzah	
+					
+//					double singleX = singleR * Math.cos(angle * i);
+//					double singleY = singleR * Math.sin(angle * i);
+//					
+//					result.add(new Long(singles.get(node).getId()).doubleValue());
+//					result.add(singleX);
+//					result.add(singleY);
 				}
 			}
 
