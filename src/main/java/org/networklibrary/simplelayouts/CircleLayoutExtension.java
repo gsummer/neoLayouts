@@ -2,12 +2,14 @@ package org.networklibrary.simplelayouts;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.server.plugins.Description;
 import org.neo4j.server.plugins.Name;
@@ -25,7 +27,6 @@ public class CircleLayoutExtension extends ServerPlugin {
 	@PluginTarget( GraphDatabaseService.class )
 	public Iterable<Double> circleLayout( @Source GraphDatabaseService graph )
 	{
-		ExecutionEngine engine = new ExecutionEngine( graph );
 		double n = 0;
 
 		List<Node> isolated = new ArrayList<Node>();
@@ -34,7 +35,11 @@ public class CircleLayoutExtension extends ServerPlugin {
 
 		try(Transaction tx = graph.beginTx()){
 			for(Node node : GlobalGraphOperations.at(graph).getAllNodes()){
-				int degree = node.getDegree();
+				Set<Node> neighbours = getNeighbours(node);
+				int degree = neighbours.size();
+//				if(node.hasProperty("name") && node.getProperty("name").equals("Al Pacino")){
+//					System.out.println(node.getProperty("name") + " degree: " + degree + " real: " +node.getDegree() );
+//				}
 				switch(degree){
 				case 0:
 					isolated.add(node);
@@ -48,6 +53,7 @@ public class CircleLayoutExtension extends ServerPlugin {
 					
 					break;
 				default:
+					
 					normals.add(node);
 					break;
 				}
@@ -60,11 +66,10 @@ public class CircleLayoutExtension extends ServerPlugin {
 
 		double r = calculateRadius(normals.size());
 		double angle = calculateAngle(normals.size());
-		double singleR = r * 1.25;
-		
+		double singleR = r * 1.5;
 		int perRow = (int)(2*r / SPACEOFNODE);
-		
 		double i = 0;
+		
 		try (Transaction tx = graph.beginTx()){
 			for(Node node : normals){
 				
@@ -79,22 +84,30 @@ public class CircleLayoutExtension extends ServerPlugin {
 				i = i + 1.0;
 				
 				if(singles.containsKey(node)){
-					
-				// wuzzah	
-					
-//					double singleX = singleR * Math.cos(angle * i);
-//					double singleY = singleR * Math.sin(angle * i);
-//					
-//					result.add(new Long(singles.get(node).getId()).doubleValue());
-//					result.add(singleX);
-//					result.add(singleY);
+					double j = 0;
+					double flip = 1;
+					for(Node single : singles.get(node)){
+						
+						double singleAngle = baseAngle + (angle/4.0 * j * flip);
+						
+						double sx = singleR * Math.cos(singleAngle);
+						double sy = singleR * Math.sin(singleAngle);
+						
+						result.add(new Long(single.getId()).doubleValue());
+						result.add(sx);
+						result.add(sy);
+						
+						flip *= -1;
+						++j;
+					}
 				}
 			}
 
+			// loners
 			int j = 0;
 			int k = 0;
 			double startX = r * Math.cos(3/2*Math.PI);
-			double startY = r * 1.5;
+			double startY = r * 1.75;
 			for(Node node : isolated){
 				double x = startX + (j*SPACEOFNODE);
 				double y = startY + (k*SPACEOFNODE);
@@ -122,6 +135,16 @@ public class CircleLayoutExtension extends ServerPlugin {
 
 	protected double calculateRadius(double n){
 		return (n * SPACEOFNODE) / (2*Math.PI);
+	}
+	
+	protected Set<Node> getNeighbours(Node node){
+		Set<Node> neighbours = new HashSet<Node>();
+		
+		for(Relationship rel : node.getRelationships()){
+			neighbours.add(rel.getOtherNode(node));
+		}
+		
+		return neighbours;
 	}
 
 }
