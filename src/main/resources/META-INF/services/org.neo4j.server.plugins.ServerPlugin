@@ -1,2 +1,3 @@
 org.networklibrary.simplelayouts.GridLayoutExtension
 org.networklibrary.simplelayouts.CircleLayoutExtension
+org.networklibrary.complexlayouts.ForceAtlas2LayoutExtension

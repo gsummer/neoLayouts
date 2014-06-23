@@ -59,6 +59,7 @@ public class CircleLayoutExtension extends ServerPlugin {
 				}
 				++n;
 			}
+			tx.success();
 		}
 
 		int numEntries = (int) (n*3);
@@ -123,6 +124,7 @@ public class CircleLayoutExtension extends ServerPlugin {
 					++k;
 				}
 			}
+			tx.success();
 		}
 
 		return result;
