@@ -48,7 +48,9 @@ public class ForceAtlas2LayoutExtension extends ServerPlugin {
 			forceAtlas2.initAlgo();
 
 			System.out.println("go algo");
-			forceAtlas2.goAlgo();
+			for(int i = 0; i < 10000; ++i){
+				forceAtlas2.goAlgo();
+			}
 
 			System.out.println("end algo");
 			forceAtlas2.endAlgo();
