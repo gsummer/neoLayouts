@@ -13,7 +13,9 @@ public class App {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		String testing = 	"/Users/gsu/random/cynetlibsync/neo4j-community-2.1.1-2/data/graph.db";
+//		String testing = 	"/Users/gsu/random/cynetlibsync/neo4j-community-2.1.1-2/data/graph.db";
+		String testing = 	"/home/gsu/random/neoanalyzer/testing/data/graph.db";
+
 
 		GraphDatabaseService g = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(
 				testing )
