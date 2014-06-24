@@ -29,7 +29,7 @@ public class App {
 
 		long start = System.currentTimeMillis();
 		Iterable<Double> resCircle = circle.circleLayout(g);
-		Iterable<Double> resForce = forceAtlas2.forceatlas2(g);
+		Iterable<Double> resForce = forceAtlas2.forceatlas2(g,1000);
 		long end = System.currentTimeMillis();
 		
 		int i = 0;
