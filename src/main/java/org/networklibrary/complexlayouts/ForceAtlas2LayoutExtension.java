@@ -10,6 +10,7 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.helpers.collection.Iterables;
 import org.neo4j.server.plugins.Description;
 import org.neo4j.server.plugins.Name;
+import org.neo4j.server.plugins.Parameter;
 import org.neo4j.server.plugins.PluginTarget;
 import org.neo4j.server.plugins.ServerPlugin;
 import org.neo4j.server.plugins.Source;
@@ -17,17 +18,23 @@ import org.neo4j.tooling.GlobalGraphOperations;
 import org.networklibrary.complexlayouts.forceatlas2.ForceAtlas2;
 import org.networklibrary.complexlayouts.forceatlas2.ForceAtlas2LayoutData;
 import org.networklibrary.complexlayouts.forceatlas2.LayoutDataRegistry;
-import org.networklibrary.simplelayouts.CircleLayoutExtension;
 import org.networklibrary.simplelayouts.GridLayoutExtension;
 
 public class ForceAtlas2LayoutExtension extends ServerPlugin {
 	@Name( "forceatlas2" )
 	@Description( "calculates the force atlas 2 layout" )
 	@PluginTarget( GraphDatabaseService.class )
-	public Iterable<Double> forceatlas2( @Source GraphDatabaseService graph )
+	public Iterable<Double> forceatlas2( @Source GraphDatabaseService graph,
+			
+			@Description( "number of iterations for the force atlas 2 to compute. defaults to 1000" )
+    		@Parameter( name = "depth", optional = true ) Integer numIterations)
 	{
 		int numNodes = 0;
 
+		if(numIterations == null || numIterations == 0){
+			numIterations = 1000;
+		}
+		
 		try (Transaction tx = graph.beginTx()){
 
 			numNodes = (int)Iterables.count(GlobalGraphOperations.at(graph).getAllNodes());
@@ -48,7 +55,9 @@ public class ForceAtlas2LayoutExtension extends ServerPlugin {
 			forceAtlas2.initAlgo();
 
 			System.out.println("go algo");
-			forceAtlas2.goAlgo();
+			for(int i = 0; i < numIterations; ++i){
+				forceAtlas2.goAlgo();
+			}
 
 			System.out.println("end algo");
 			forceAtlas2.endAlgo();

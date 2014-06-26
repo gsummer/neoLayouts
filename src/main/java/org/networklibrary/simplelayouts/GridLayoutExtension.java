@@ -31,6 +31,7 @@ public class GridLayoutExtension extends ServerPlugin {
 			String query = "match (n) return count(n) as num";
 			ResourceIterator<Long> resultIterator = engine.execute( query).columnAs( "num" );
 			n = new Long(resultIterator.next()).intValue();
+			tx.success();
 		}
 		List<Double> result = new ArrayList<Double>(n*3);
 
@@ -59,6 +60,7 @@ public class GridLayoutExtension extends ServerPlugin {
 
 				currCol = currCol + 1;
 			}
+			tx.success();
 		}
 
 		return result;
