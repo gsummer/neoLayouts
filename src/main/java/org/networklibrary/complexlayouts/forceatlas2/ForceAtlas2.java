@@ -82,9 +82,13 @@ public class ForceAtlas2  {
 	double outboundAttCompensation = 1;
 	private ExecutorService pool;
 
-	public ForceAtlas2(GraphDatabaseService graph) {
+	public ForceAtlas2(GraphDatabaseService graph, int numThreads) {
 		this.graph = graph;
-		this.threadCount = Math.min(4, Math.max(1, Runtime.getRuntime().availableProcessors() - 1));
+		
+		if(numThreads <= 0)
+			this.threadCount = Math.min(4, Math.max(1, Runtime.getRuntime().availableProcessors() - 1));
+		else
+			this.threadCount = numThreads;
 	}
 
 
