@@ -47,13 +47,18 @@ public class ForceAtlas2LayoutExtension extends ServerPlugin {
 			@Description( "indicate if the algorithm should restart or use coordinates saved in the graph (if available)" )
 			@Parameter( name = "pickup", optional = false ) boolean pickup,
 			
+			//behaviour
 			@Parameter( name = "dissuadeHubs", optional = false ) boolean dissuadeHubs,
 			@Parameter( name = "linLogMode", optional = false ) boolean linLogMode,
 			@Parameter( name = "preventOverlap", optional = false ) boolean preventOverlap,
 			@Parameter( name = "edgeWeightInfluence", optional = false ) Double edgeWeightInfluence,
+			
+			// tuning
 			@Parameter( name = "scaling", optional = false ) Double scaling,
 			@Parameter( name = "strongGravityMode", optional = false ) boolean strongGravityMode,
 			@Parameter( name = "gravity", optional = false ) Double gravity,
+			
+			// performance
 			@Parameter( name = "tolerance", optional = false ) Double tolerance,
 			@Parameter( name = "approxRepulsion", optional = false ) boolean approxRepulsion,
 			@Parameter( name = "approx", optional = false ) Double approx)
