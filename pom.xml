@@ -4,11 +4,10 @@
 
 	<groupId>org.networklibrary</groupId>
 	<artifactId>neolayouts</artifactId>
-	<version>0.9</version>
+	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>simplelayouts</name>
-	<url>http://maven.apache.org</url>
+	<name>neoLayouts</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
